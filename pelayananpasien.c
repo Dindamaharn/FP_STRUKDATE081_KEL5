@@ -2,6 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 
+//Struktur data
+typedef struct patient
+{
+    int id;
+    char name[50];
+    int age;
+    char gender[10];
+    char status[20];
+    int priority;
+    struct patient *next;
+    struct patient *left;
+    struct patient *right;
+    char diagnosis[100];
+    char treatment[100];
+}patient;
+
 // Fungsi untuk memindahkan pasien dari Queue ke Double Linked List berdasarkan prioritas
 void moveToActiveQueue(Queue *queue, DoubleLinkedList *activeQueue)
 {
