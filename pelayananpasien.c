@@ -18,6 +18,26 @@ typedef struct patient
     char treatment[100];
 }patient;
 
+// Queue: Antrian registrasi
+typedef struct
+{
+    Patient *front;
+    Patient *rear;
+} Queue;
+
+// Double Linked List: Antrian pasien aktif
+typedef struct
+{
+    Patient *left;  
+    Patient *right; 
+} DoubleLinkedList;
+
+// Single Linked List: Riwayat pasien
+typedef struct
+{
+    Patient *head;
+} SingleLinkedList;
+
 // Fungsi untuk memindahkan pasien dari Queue ke Double Linked List berdasarkan prioritas
 void moveToActiveQueue(Queue *queue, DoubleLinkedList *activeQueue)
 {
