@@ -216,7 +216,7 @@ void printActiveQueue(DoubleLinkedList *activeQueue)
     while (current != NULL)
     {
         printf("ID: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
-        current->id, current->name, current->age, current->gender, current->status);
+               current->id, current->name, current->age, current->gender, current->status);
         current = current->right;
     }
     if (activeQueue->left == NULL)
@@ -233,15 +233,45 @@ void printHistory(SingleLinkedList *history)
     while (current != NULL)
     {
         printf("ID: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
-        current->id, current->name, current->age, current->gender, current->status);
-        printf("Diagnosis: %s\n", current->diagnosis);  
-        printf("Tindakan: %s\n", current->treatment);  
+               current->id, current->name, current->age, current->gender, current->status);
+        printf("Diagnosis: %s\n", current->diagnosis);
+        printf("Tindakan: %s\n", current->treatment);
         current = current->next;
         printf("\n");
     }
     if (history->head == NULL)
     {
         printf("Kosong.\n");
+    }
+}
+
+// Fungsi untuk mencari pasien berdasarkan ID dalam antrian (Queue, ActiveQueue, History)
+void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinkedList *history, int id)
+{
+    // Mnecari di antrian registrasi (queue)
+    Patient *current = queue->front;
+    while (current != NULL)
+    {
+        if (current->id == id)
+        {
+            printf("Pasien ditemukan diantrian registrasi:\n");
+            printf("ID: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
+                   current->id, current->name, current->age, current->gender, current->status);
+            return;
+        }
+    }
+
+    // Mencari diantrian aktif (double linkedlist)
+    current = activeQueue->left;
+    while (current != NULL)
+    {
+        if (current->id == id)
+        {
+            printf("Pasien ditemukan diantrian aktif:\n");
+            printf("ID: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
+                   current->id, current->name, current->age, current->gender, current->status);
+            return;
+        }
     }
 }
 
