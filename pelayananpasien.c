@@ -190,10 +190,9 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
     servedPatient->right = NULL;
     servedPatient->left = NULL;
 
-
-// Tambahkan diagnosis dan tindakan
+    // Tambahkan diagnosis dan tindakan
     printf("Masukkan diagnosis untuk pasien %s (ID Pasien: %d): ", servedPatient->name, servedPatient->id);
-    getchar(); 
+    getchar();
     fgets(servedPatient->diagnosis, sizeof(servedPatient->diagnosis), stdin);
     servedPatient->diagnosis[strcspn(servedPatient->diagnosis, "\n")] = '\0';
 
@@ -201,12 +200,11 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
     fgets(servedPatient->treatment, sizeof(servedPatient->treatment), stdin);
     servedPatient->treatment[strcspn(servedPatient->treatment, "\n")] = '\0';
 
-// Tambahkan ke histori
+    // Tambahkan ke histori
     servedPatient->next = history->head;
     history->head = servedPatient;
 
     printf("Pasien %s (ID Pasien: %d) telah dipindahkan ke histori.\n", servedPatient->name, servedPatient->id);
-
 }
 // Fungsi untuk mencetak antrian registrasi
 void printQueue(Queue *queue)
@@ -276,6 +274,7 @@ void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinked
                    current->id, current->name, current->age, current->gender, current->status);
             return;
         }
+        current = current->next;
     }
 
     // Mencari diantrian aktif (double linkedlist)
@@ -289,7 +288,26 @@ void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinked
                    current->id, current->name, current->age, current->gender, current->status);
             return;
         }
+        current = current->right;
     }
+
+    // Mencari di riwayat pasien (single linkedlist)
+    current = history->head;
+    while (current != NULL)
+    {
+        if (current->id == id)
+        {
+            printf("Pasien ditemukan di riwayat pasien:\n");
+            printf("ID: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
+                   current->id, current->name, current->age, current->gender, current->status);
+            printf("Diagosis: %s\n", current->diagnosis);
+            printf("Tindakan: %s\n", current->treatment);
+            return;
+        }
+        current = current->next;
+    }
+
+    printf("Pasien dengan ID %d tidak ditemukan.\n", id);
 }
 
 // main programm
