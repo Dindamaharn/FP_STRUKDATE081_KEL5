@@ -166,6 +166,7 @@ void moveToActiveQueue(Queue *queue, DoubleLinkedList *activeQueue)
 
     printf("Pasien %s (ID: %d) dipindahkan ke antrian aktif.\n", nextPatient->name, nextPatient->id);
 }
+
 // Fungsi untuk memindahkan pasien dari antrian aktif ke histori
 void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
 {
@@ -189,6 +190,7 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
     servedPatient->right = NULL;
     servedPatient->left = NULL;
 }
+
 // Fungsi untuk mencetak antrian registrasi
 void printQueue(Queue *queue)
 {
@@ -205,6 +207,7 @@ void printQueue(Queue *queue)
         printf("Kosong.\n");
     }
 }
+
 // Fungsi untuk mencetak antrian aktif
 void printActiveQueue(DoubleLinkedList *activeQueue)
 {
@@ -217,6 +220,26 @@ void printActiveQueue(DoubleLinkedList *activeQueue)
         current = current->right;
     }
     if (activeQueue->left == NULL)
+    {
+        printf("Kosong.\n");
+    }
+}
+
+// Fungsi untuk mencetak histori pasien
+void printHistory(SingleLinkedList *history)
+{
+    Patient *current = history->head;
+    printf("Riwayat Pasien Hari Ini:\n");
+    while (current != NULL)
+    {
+        printf("ID: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
+        current->id, current->name, current->age, current->gender, current->status);
+        printf("Diagnosis: %s\n", current->diagnosis);  
+        printf("Tindakan: %s\n", current->treatment);  
+        current = current->next;
+        printf("\n");
+    }
+    if (history->head == NULL)
     {
         printf("Kosong.\n");
     }
