@@ -190,7 +190,7 @@ void printActiveQueue(DoubleLinkedList *activeQueue)
     while (current != NULL)
     {
         printf("ID: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
-               current->id, current->name, current->age, current->gender, current->status);
+        current->id, current->name, current->age, current->gender, current->status);
         current = current->right;
     }
     if (activeQueue->left == NULL)
