@@ -16,7 +16,7 @@ typedef struct patient
     struct patient *right;
     char diagnosis[100];
     char treatment[100];
-}patient;
+}Patient;
 
 // Queue: Antrian registrasi
 typedef struct
@@ -37,6 +37,50 @@ typedef struct
 {
     Patient *head;
 } SingleLinkedList;
+
+// Fungsi untuk menemukan pasien dengan prioritas tertinggi dalam antrian registrasi
+Patient *findHighestPriorityPatient(Queue *queue)
+{
+    if(queue->front== NULL)
+        return NULL;
+    Patient *current = queue->front;
+    Patient *highestPriorityPatient = current;
+
+    //Mencari pasien dengan prioritas tertinggi
+    while(current != NULL)
+    {
+        if (current->priority < highestPriorityPatient->priority)
+        {
+            highestPriorityPatient = current;
+        }
+        current = current->next;
+    }
+
+    //Menghapus pasien dari queue
+    if (highestPriorityPatient == queue->front)
+    {
+        queue->front = queue->front->next;
+        if (queue->front == NULL)
+        {
+            queue->rear = NULL;
+        }
+    }
+    else{
+        current = queue->front;
+        while(current->next != highestPriorityPatient)
+        {
+            current = current->next;
+        }
+        current->next = highestPriorityPatient;
+        if (highestPriorityPatient == queue->rear)
+        {
+            queue-> rear = current;
+        }
+    }
+
+    highestPriorityPatient->next = NULL;
+    return highestPriorityPatient;
+}
 
 // Fungsi untuk memindahkan pasien dari Queue ke Double Linked List berdasarkan prioritas
 void moveToActiveQueue(Queue *queue, DoubleLinkedList *activeQueue)
@@ -90,6 +134,23 @@ void moveToActiveQueue(Queue *queue, DoubleLinkedList *activeQueue)
     }
 
     printf("Pasien %s (ID: %d) dipindahkan ke antrian aktif.\n", nextPatient->name, nextPatient->id);
+}
+
+// Fungsi untuk mencetak antrian aktif
+void printActiveQueue(DoubleLinkedList *activeQueue)
+{
+    Patient *current = activeQueue->left;
+    print("Antrian Pasien AKtif:\n");
+    while (current != NULL)
+    {
+        printf("ID: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
+        current->id, current->name, current->age, current->gender, current->status);
+        current = current->right;
+    }
+    if (activeQueue->left == NULL)
+    {
+        printf("Kosong.\n");
+    }
 }
 
 //main programm
