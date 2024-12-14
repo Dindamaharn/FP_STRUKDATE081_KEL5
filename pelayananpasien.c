@@ -164,7 +164,7 @@ void moveToActiveQueue(Queue *queue, DoubleLinkedList *activeQueue)
         }
     }
 
-    printf("Pasien %s (ID: %d) dipindahkan ke antrian aktif.\n", nextPatient->name, nextPatient->id);
+    printf("Pasien %s (ID Pasien: %d) dipindahkan ke antrian aktif.\n", nextPatient->name, nextPatient->id);
 }
 
 // Fungsi untuk memindahkan pasien dari antrian aktif ke histori
@@ -172,7 +172,7 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
 {
     if (activeQueue->left == NULL)
     {
-        printf("Tidak ada pasien dalam antrian aktif.\n");
+        printf("Sedang tidak ada pasien dalam antrian aktif.\n");
         return;
     }
 
@@ -189,18 +189,25 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
 
     servedPatient->right = NULL;
     servedPatient->left = NULL;
-}
+
 
 // Tambahkan diagnosis dan tindakan
-    printf("Masukkan diagnosis untuk pasien %s (ID: %d): ", servedPatient->name, servedPatient->id);
-    getchar(); // Membersihkan buffer
+    printf("Masukkan diagnosis untuk pasien %s (ID Pasien: %d): ", servedPatient->name, servedPatient->id);
+    getchar(); 
     fgets(servedPatient->diagnosis, sizeof(servedPatient->diagnosis), stdin);
     servedPatient->diagnosis[strcspn(servedPatient->diagnosis, "\n")] = '\0';
 
-    printf("Masukkan tindakan untuk pasien %s (ID: %d): ", servedPatient->name, servedPatient->id);
+    printf("Masukkan tindakan untuk pasien %s (ID Pasien: %d): ", servedPatient->name, servedPatient->id);
     fgets(servedPatient->treatment, sizeof(servedPatient->treatment), stdin);
     servedPatient->treatment[strcspn(servedPatient->treatment, "\n")] = '\0';
 
+// Tambahkan ke histori
+    servedPatient->next = history->head;
+    history->head = servedPatient;
+
+    printf("Pasien %s (ID Pasien: %d) telah dipindahkan ke histori.\n", servedPatient->name, servedPatient->id);
+
+}
 // Fungsi untuk mencetak antrian registrasi
 void printQueue(Queue *queue)
 {
@@ -265,7 +272,7 @@ void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinked
         if (current->id == id)
         {
             printf("Pasien ditemukan diantrian registrasi:\n");
-            printf("ID: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
+            printf("ID Pasien: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
                    current->id, current->name, current->age, current->gender, current->status);
             return;
         }
@@ -278,7 +285,7 @@ void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinked
         if (current->id == id)
         {
             printf("Pasien ditemukan diantrian aktif:\n");
-            printf("ID: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
+            printf("ID Pasien: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
                    current->id, current->name, current->age, current->gender, current->status);
             return;
         }
