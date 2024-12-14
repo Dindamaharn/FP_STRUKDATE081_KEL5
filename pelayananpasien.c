@@ -166,6 +166,29 @@ void moveToActiveQueue(Queue *queue, DoubleLinkedList *activeQueue)
 
     printf("Pasien %s (ID: %d) dipindahkan ke antrian aktif.\n", nextPatient->name, nextPatient->id);
 }
+// Fungsi untuk memindahkan pasien dari antrian aktif ke histori
+void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
+{
+    if (activeQueue->left == NULL)
+    {
+        printf("Tidak ada pasien dalam antrian aktif.\n");
+        return;
+    }
+
+    Patient *servedPatient = activeQueue->left;
+    activeQueue->left = activeQueue->left->right;
+    if (activeQueue->left != NULL)
+    {
+        activeQueue->left->left = NULL;
+    }
+    else
+    {
+        activeQueue->right = NULL;
+    }
+
+    servedPatient->right = NULL;
+    servedPatient->left = NULL;
+}
 // Fungsi untuk mencetak antrian registrasi
 void printQueue(Queue *queue)
 {
