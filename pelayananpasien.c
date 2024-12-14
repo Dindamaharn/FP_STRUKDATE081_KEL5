@@ -191,6 +191,16 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
     servedPatient->left = NULL;
 }
 
+// Tambahkan diagnosis dan tindakan
+    printf("Masukkan diagnosis untuk pasien %s (ID: %d): ", servedPatient->name, servedPatient->id);
+    getchar(); // Membersihkan buffer
+    fgets(servedPatient->diagnosis, sizeof(servedPatient->diagnosis), stdin);
+    servedPatient->diagnosis[strcspn(servedPatient->diagnosis, "\n")] = '\0';
+
+    printf("Masukkan tindakan untuk pasien %s (ID: %d): ", servedPatient->name, servedPatient->id);
+    fgets(servedPatient->treatment, sizeof(servedPatient->treatment), stdin);
+    servedPatient->treatment[strcspn(servedPatient->treatment, "\n")] = '\0';
+
 // Fungsi untuk mencetak antrian registrasi
 void printQueue(Queue *queue)
 {
