@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-//Struktur data
+// Struktur data
 typedef struct patient
 {
     int id;
@@ -16,7 +16,7 @@ typedef struct patient
     struct patient *right;
     char diagnosis[100];
     char treatment[100];
-}Patient;
+} Patient;
 
 // Queue: Antrian registrasi
 typedef struct
@@ -28,8 +28,8 @@ typedef struct
 // Double Linked List: Antrian pasien aktif
 typedef struct
 {
-    Patient *left;  
-    Patient *right; 
+    Patient *left;
+    Patient *right;
 } DoubleLinkedList;
 
 // Single Linked List: Riwayat pasien
@@ -38,16 +38,46 @@ typedef struct
     Patient *head;
 } SingleLinkedList;
 
+// Fungsi untuk membuat pasien baru
+Patient *createPatient(int id, const char *name, int age, const char *gender, const char *status, int priority)
+{
+    Patient *newPatient = (Patient *)malloc(sizeof(Patient));
+    newPatient->id = id;
+    strcpy(newPatient->name, name);
+    newPatient->age = age;
+    strcpy(newPatient->gender, gender);
+    strcpy(newPatient->status, status);
+    newPatient->priority = priority;
+    newPatient->next = NULL;
+    newPatient->left = NULL;
+    newPatient->right = NULL;
+    return newPatient;
+}
+
+// Fungsi untuk menabahkan pasien ke Queue (Registrasi)
+void enqueue(Queue *queue, Patient *patient)
+{
+    if (queue->rear == NULL)
+    {
+        queue->front = queue->rear = patient;
+    }
+    else
+    {
+        queue->rear->next = patient;
+        queue->rear = patient;
+    }
+}
+
 // Fungsi untuk menemukan pasien dengan prioritas tertinggi dalam antrian registrasi
 Patient *findHighestPriorityPatient(Queue *queue)
 {
-    if(queue->front== NULL)
+    if (queue->front == NULL)
         return NULL;
     Patient *current = queue->front;
     Patient *highestPriorityPatient = current;
 
-    //Mencari pasien dengan prioritas tertinggi
-    while(current != NULL)
+    // Mencari pasien dengan prioritas tertinggi
+    while (current != NULL)
     {
         if (current->priority < highestPriorityPatient->priority)
         {
@@ -56,7 +86,7 @@ Patient *findHighestPriorityPatient(Queue *queue)
         current = current->next;
     }
 
-    //Menghapus pasien dari queue
+    // Menghapus pasien dari queue
     if (highestPriorityPatient == queue->front)
     {
         queue->front = queue->front->next;
@@ -65,16 +95,17 @@ Patient *findHighestPriorityPatient(Queue *queue)
             queue->rear = NULL;
         }
     }
-    else{
+    else
+    {
         current = queue->front;
-        while(current->next != highestPriorityPatient)
+        while (current->next != highestPriorityPatient)
         {
             current = current->next;
         }
         current->next = highestPriorityPatient;
         if (highestPriorityPatient == queue->rear)
         {
-            queue-> rear = current;
+            queue->rear = current;
         }
     }
 
@@ -144,7 +175,7 @@ void printActiveQueue(DoubleLinkedList *activeQueue)
     while (current != NULL)
     {
         printf("ID: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
-        current->id, current->name, current->age, current->gender, current->status);
+               current->id, current->name, current->age, current->gender, current->status);
         current = current->right;
     }
     if (activeQueue->left == NULL)
@@ -153,9 +184,10 @@ void printActiveQueue(DoubleLinkedList *activeQueue)
     }
 }
 
-//main programm
-int main() {
-    Queue waitingQueue ={NULL, NULL};
+// main programm
+int main()
+{
+    Queue waitingQueue = {NULL, NULL};
     DoubleLinkedList activeQueue = {NULL, NULL};
     SingleLinkedList history = {NULL};
     int choice, id, age, priority;
@@ -192,11 +224,11 @@ int main() {
             printf("Masukkan kepentingan pasien (IGD, Kontrol, Konsultasi): ");
             scanf("%s", status);
 
-            if (strcmp(status, "IGD")==0)
+            if (strcmp(status, "IGD") == 0)
             {
                 priority = 1;
             }
-            else if (strcmp(status, "Kontrol")==0)
+            else if (strcmp(status, "Kontrol") == 0)
             {
                 priority = 2;
             }
@@ -204,7 +236,7 @@ int main() {
             {
                 priority = 3;
             }
-            
+
             enqueue(&waitingQueue, createPatient(id, name, age, gender, status, priority));
             printf("Pasien berhasil ditambahkan ke antrian registrasi.\n");
             break;
@@ -248,6 +280,6 @@ int main() {
             printf("Opsi tidak valid!!\n");
         }
     }
-    
+
     return 0;
 }
