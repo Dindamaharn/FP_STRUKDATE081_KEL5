@@ -227,7 +227,7 @@ void printQueue(Queue *queue)
 void printActiveQueue(DoubleLinkedList *activeQueue)
 {
     Patient *current = activeQueue->left;
-    print("Antrian Pasien AKtif:\n");
+    printf("Antrian Pasien AKtif:\n");
     while (current != NULL)
     {
         printf("ID Pasien: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
@@ -325,6 +325,36 @@ void clearQueue(Queue *queue)
     printf("Semua data di antrian registrasi telah dihapus.\n");
 }
 
+// Fungsi untuk menghapus semua pasien dari Double Linked List (Antrian Aktif)
+void clearActiveQueue(DoubleLinkedList *activeQueue)
+{
+    Patient *current = activeQueue->left;
+    Patient *temp;
+    while (current != NULL)
+    {
+        temp = current;
+        current = current->right;
+        free(temp);
+    }
+    activeQueue->left = activeQueue->right = NULL;
+    printf("Semua data di antrian pasien aktif telah dihapus.\n");
+}
+
+// Fungsi untuk menghapus semua pasien dari Single Linked List (Riwayat)
+void clearHistory(SingleLinkedList *history)
+{
+    Patient *current = history->head;
+    Patient *temp;
+    while (current != NULL)
+    {
+        temp = current;
+        current = current->next;
+        free(temp);
+    }
+    history->head = NULL;
+    printf("Semua data di riwayat pasien telah dihapus.\n");
+}
+
 // main programm
 int main()
 {
@@ -405,7 +435,7 @@ int main()
         case 7:
             printf("Masukkan ID pasien yang ingin dicari: ");
             scanf("%d", &id);
-            searchPatienById(&waitingQueue, &activeQueue, &history, id);
+            searchPatientById(&waitingQueue, &activeQueue, &history, id);
             break;
 
         case 8:
