@@ -404,8 +404,8 @@ int main()
         printf("5. Catat histori pasien setelah pemeriksaan\n");
         printf("6. Tampilkan riwayat pasien hari ini\n");
         printf("7. Cari pasien berdasarkan ID\n");
-        printf("8. Keluar program\n");
-        printf("9. Hapus semua data\n");
+        printf("8. Hapus semua data\n");
+        printf("9. Keluar program\n");
         printf("Pilih opsi: ");
         scanf("%s", choiceInput);
 
@@ -495,15 +495,16 @@ int main()
             }
 
             searchPatientById(&waitingQueue, &activeQueue, &history, atoi(id));
-
-        case 8:
-            exit(0);
             break;
 
-        case 9:
+        case 8:
             clearQueue(&waitingQueue);
             clearActiveQueue(&activeQueue);
             clearHistory(&history);
+            break;
+
+        case 9:
+            exit(0);
             break;
         default:
             printf("Opsi tidak valid!!\n");
