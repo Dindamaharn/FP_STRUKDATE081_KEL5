@@ -380,17 +380,29 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
 void printQueue(Queue *queue)
 {
     Patient *current = queue->front;
-    printf("Antrian Registrasi:\n");
+    
+    int console_width = 80;
+    char title[] = "Antrian Registrasi";
+    int title_len = strlen(title);
+    int padding = (console_width - title_len) / 2;
+
+    printf("%*s%s\n", padding, "", title);
+
+    printf("=========================================================================================\n");
+    printf("| ID Pasien  | Nama                   | Usia  | Jenis Kelamin     | Kepentingan         |\n");
+    printf("=========================================================================================\n");
 
     while (current != NULL)
     {
-        printf("ID Pasien: %d, Nama: %s, Usia: %d, Jenis Kelamin:%s, Kepentingan: %s\n", current->id, current->name, current->age, current->gender, current->status);
+        printf("| %-10d | %-22s | %-5d | %-17s | %-19s |\n", current->id, current->name, current->age, current->gender, current->status);
         current = current->next;
     }
+
     if (queue->front == NULL)
     {
-        printf("Kosong.\n");
-    }
+        printf("| %-10s | %-22s | %-5s | %-17s | %-19s |\n", "Kosong", "", "", "", "");    }
+    
+    printf("=========================================================================================\n");
 }
 
 // Fungsi untuk mencetak antrian aktif
