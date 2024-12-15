@@ -102,7 +102,7 @@ Patient *findHighestPriorityPatient(Queue *queue)
         {
             current = current->next;
         }
-        current->next = highestPriorityPatient;
+        current->next = highestPriorityPatient->next;
         if (highestPriorityPatient == queue->rear)
         {
             queue->rear = current;
@@ -383,14 +383,14 @@ int main()
         {
         case 1:
             printf("Masukkan ID Pasien: ");
-            scanf("%d, &id");
+            scanf("%d", &id);
             printf("Masukkan nama pasien: ");
             getchar();
             fgets(name, sizeof(name), stdin);
             name[strcspn(name, "\n")] = '\0';
             printf("Masukkan usia pasien: ");
             scanf("%d", &age);
-            printf("Masukkan jenis kelamin pasien: ");
+            printf("Masukkan jenis kelamin pasien (Pria/Wanita): ");
             scanf("%s", gender);
             printf("Masukkan kepentingan pasien (IGD, Kontrol, Konsultasi): ");
             scanf("%s", status);
