@@ -400,7 +400,11 @@ void printQueue(Queue *queue)
 
     if (queue->front == NULL)
     {
-        printf("| %-10s | %-22s | %-5s | %-17s | %-19s |\n", "Kosong", "", "", "", "");    }
+        char message[] = "Tidak Ada Pasien Dalam Antrian Registrasi";
+        int message_len = strlen(message);
+        int message_padding = (console_width - message_len) / 2;
+        printf("%*s%s\n", message_padding, "", message);  
+    }
     
     printf("=========================================================================================\n");
 }
@@ -429,7 +433,10 @@ void printActiveQueue(DoubleLinkedList *activeQueue)
     }
     if (activeQueue->left == NULL)
     {
-        printf("| %-10s | %-22s | %-5s | %-17s | %-19s |\n", "Kosong", "", "", "", "");
+        char message[] = "Tidak Ada Pasien Dalam Antrian Aktif";
+        int message_len = strlen(message);
+        int message_padding = (console_width - message_len) / 2;
+        printf("%*s%s\n", message_padding, "", message);  
     }
     printf("=========================================================================================\n");
 
@@ -438,8 +445,16 @@ void printActiveQueue(DoubleLinkedList *activeQueue)
 // Fungsi untuk mencetak histori pasien
 void printHistory(SingleLinkedList *history)
 {
-    // Hitung jumlah pasien dlm riwayat
     Patient *current = history->head;
+
+    int console_width = 130;
+    char title[] = "Riwayat Pasien Hari Ini";
+    int title_len = strlen(title);
+    int padding = (console_width - title_len) / 2;
+
+    printf("%*s%s\n", padding, "", title);
+
+    // Hitung jumlah pasien dlm riwayat
     int count = 0;
     while (current != NULL)
     {
@@ -447,8 +462,11 @@ void printHistory(SingleLinkedList *history)
         current = current->next;
     }
 
+    printf("====================================================================================================================================\n");
+    printf("| ID Pasien  | Nama                   | Usia  | Jenis Kelamin     | Kepentingan         | Diagnosis           | Tindakan           |\n");
+    printf("====================================================================================================================================\n");
+
     // Cetak riwayat pasien dari yang pertama diperiksa
-    printf("Riwayat Pasien Hari Ini:\n");
     for (int i = count; i > 0; i--)
     {
         current = history->head;
@@ -456,17 +474,19 @@ void printHistory(SingleLinkedList *history)
         {
             current = current->next;
         }
-        printf("ID Pasien: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
-               current->id, current->name, current->age, current->gender, current->status);
-        printf("Diagnosis: %s\n", current->diagnosis);
-        printf("Tindakan: %s\n", current->treatment);
-        printf("\n");
+        printf("| %-10d | %-22s | %-5d | %-17s | %-19s | %-19s | %-18s |\n", 
+            current->id, current->name, current->age, current->gender, 
+            current->status, current->diagnosis, current->treatment);
     }
 
     if (history->head == NULL)
     {
-        printf("Kosong.\n");
+        char message[] = "Belum Ada Pasien Untuk Hari Ini";
+        int message_len = strlen(message);
+        int message_padding = (console_width - message_len) / 2;
+        printf("%*s%s\n", message_padding, "", message);  
     }
+    printf("====================================================================================================================================\n");
 }
 
 // Fungsi untuk mencari pasien berdasarkan ID dalam antrian (Queue, ActiveQueue, History)

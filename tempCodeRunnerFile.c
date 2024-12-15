@@ -1,1 +1,1 @@
-#include <conio.h>
+rintf("| %-128s | %-18s \n");
