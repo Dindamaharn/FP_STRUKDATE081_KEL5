@@ -409,17 +409,30 @@ void printQueue(Queue *queue)
 void printActiveQueue(DoubleLinkedList *activeQueue)
 {
     Patient *current = activeQueue->left;
-    printf("Antrian Pasien Aktif:\n");
+
+    int console_width = 80;
+    char title[] = "Antrian Pasien Aktif";
+    int title_len = strlen(title);
+    int padding = (console_width - title_len) / 2;
+
+    printf("%*s%s\n", padding, "", title);
+
+    printf("=========================================================================================\n");
+    printf("| ID Pasien  | Nama                   | Usia  | Jenis Kelamin     | Kepentingan         |\n");
+    printf("=========================================================================================\n");
+
     while (current != NULL)
     {
-        printf("ID Pasien: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
-               current->id, current->name, current->age, current->gender, current->status);
+        printf("| %-10d | %-22s | %-5d | %-17s | %-19s |\n", 
+            current->id, current->name, current->age, current->gender, current->status);
         current = current->right;
     }
     if (activeQueue->left == NULL)
     {
-        printf("Kosong.\n");
+        printf("| %-10s | %-22s | %-5s | %-17s | %-19s |\n", "Kosong", "", "", "", "");
     }
+    printf("=========================================================================================\n");
+
 }
 
 // Fungsi untuk mencetak histori pasien
