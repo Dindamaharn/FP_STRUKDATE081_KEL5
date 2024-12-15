@@ -39,6 +39,151 @@ typedef struct
     Patient *head;
 } SingleLinkedList;
 
+// Deklarasi Fungsi
+void enqueue(Queue *queue, Patient *patient);
+void moveToActiveQueue(Queue *queue, DoubleLinkedList *activeQueue);
+void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history);
+void printQueue(Queue *queue);
+void printActiveQueue(DoubleLinkedList *activeQueue);
+void printHistory(SingleLinkedList *history);
+void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinkedList *history, int id);
+void clearQueue(Queue *queue);
+void clearActiveQueue(DoubleLinkedList *activeQueue);
+void clearHistory(SingleLinkedList *history);
+int isNumber(const char *str);
+Patient *createPatient(int id, const char *name, int age, const char *gender, const char *status, int priority);
+
+// Main programm
+int main()
+{
+    Queue waitingQueue = {NULL, NULL};
+    DoubleLinkedList activeQueue = {NULL, NULL};
+    SingleLinkedList history = {NULL};
+    int choice;
+    char choiceInput[10];
+    char id[10], age[10];
+    char name[50], gender[10], status[20];
+
+    while (1)
+    {
+        printf("\n ------ Menu ------\n");
+        printf("1. Tambahkan pasien ke registrasi\n");
+        printf("2. Pindahkan pasien ke antrian aktif\n");
+        printf("3. Cetak antrian registrasi\n");
+        printf("4. Cetak antrian pasien aktif\n");
+        printf("5. Catat histori pasien setelah pemeriksaan\n");
+        printf("6. Tampilkan riwayat pasien hari ini\n");
+        printf("7. Cari pasien berdasarkan ID\n");
+        printf("8. Hapus semua data\n");
+        printf("9. Keluar program\n");
+        printf("Pilih opsi: ");
+        scanf("%s", choiceInput);
+
+        if (!isNumber(choiceInput))
+        {
+            printf("Input tidak valid! Harap masukkan angka.\n");
+            continue;
+        }
+
+        choice = atoi(choiceInput);
+
+        switch (choice)
+        {
+        case 1:
+            printf("Masukkan ID pasien: ");
+            scanf("%s", id);
+            if (!isNumber(id))
+            {
+                printf("Input tidak valid! Harap masukkan angka untuk ID.\n");
+                break;
+            }
+
+            printf("Masukkan nama pasien: ");
+            getchar();
+            fgets(name, sizeof(name), stdin);
+            name[strcspn(name, "\n")] = '\0';
+
+            printf("Masukkan usia pasien: ");
+            scanf("%s", age);
+            if (!isNumber(age))
+            {
+                printf("Input tidak valid! Harap masukkan angka untuk usia.\n");
+                break;
+            }
+
+            printf("Masukkan jenis kelamin pasien (Pria/Wanita): ");
+            scanf("%s", gender);
+            printf("Masukkan kepentingan pasien (IGD, Kontrol, Konsultasi): ");
+            scanf("%s", status);
+
+            int priority;
+            if (strcmp(status, "IGD") == 0)
+            {
+                priority = 1;
+            }
+            else if (strcmp(status, "Kontrol") == 0)
+            {
+                priority = 2;
+            }
+            else
+            {
+                priority = 3;
+            }
+
+            enqueue(&waitingQueue, createPatient(atoi(id), name, atoi(age), gender, status, priority));
+            printf("Pasien berhasil ditambahkan ke antrian registrasi.\n");
+            break;
+
+        case 2:
+            moveToActiveQueue(&waitingQueue, &activeQueue);
+            break;
+
+        case 3:
+            printQueue(&waitingQueue);
+            break;
+
+        case 4:
+            printActiveQueue(&activeQueue);
+            break;
+
+        case 5:
+            moveToHistory(&activeQueue, &history);
+            break;
+
+        case 6:
+            printHistory(&history);
+            break;
+
+        case 7:
+            printf("Masukkan ID pasien yang ingin dicari: ");
+            scanf("%s", id);
+
+            if (!isNumber(id))
+            {
+                printf("Input tidak valid! Harap masukkan angka untuk ID Pasien.\n");
+                break;
+            }
+
+            searchPatientById(&waitingQueue, &activeQueue, &history, atoi(id));
+            break;
+
+        case 8:
+            clearQueue(&waitingQueue);
+            clearActiveQueue(&activeQueue);
+            clearHistory(&history);
+            break;
+
+        case 9:
+            exit(0);
+            break;
+        default:
+            printf("Opsi tidak valid!!\n");
+        }
+    }
+
+    return 0;
+}
+
 // Fungsi untuk mengecek apakah input hanya angka
 int isNumber(const char *str)
 {
@@ -259,7 +404,7 @@ void printHistory(SingleLinkedList *history)
 {
     // Hitung jumlah pasien dlm riwayat
     Patient *current = history->head;
-    int count =0;
+    int count = 0;
     while (current != NULL)
     {
         count++;
@@ -268,7 +413,7 @@ void printHistory(SingleLinkedList *history)
 
     // Cetak riwayat pasien dari yang pertama diperiksa
     printf("Riwayat Pasien Hari Ini:\n");
-    for (int i =count; i>0; i--)
+    for (int i = count; i > 0; i--)
     {
         current = history->head;
         for (int j = 1; j < i; j++)
@@ -281,7 +426,7 @@ void printHistory(SingleLinkedList *history)
         printf("Tindakan: %s\n", current->treatment);
         printf("\n");
     }
-        
+
     if (history->head == NULL)
     {
         printf("Kosong.\n");
@@ -381,135 +526,4 @@ void clearHistory(SingleLinkedList *history)
     }
     history->head = NULL;
     printf("Semua data di riwayat pasien telah dihapus.\n");
-}
-
-// main programm
-int main()
-{
-    Queue waitingQueue = {NULL, NULL};
-    DoubleLinkedList activeQueue = {NULL, NULL};
-    SingleLinkedList history = {NULL};
-    int choice;
-    char choiceInput[10];
-    char id[10], age[10];
-    char name[50], gender[10], status[20];
-
-    while (1)
-    {
-        printf("\n ------ Menu ------\n");
-        printf("1. Tambahkan pasien ke registrasi\n");
-        printf("2. Pindahkan pasien ke antrian aktif\n");
-        printf("3. Cetak antrian registrasi\n");
-        printf("4. Cetak antrian pasien aktif\n");
-        printf("5. Catat histori pasien setelah pemeriksaan\n");
-        printf("6. Tampilkan riwayat pasien hari ini\n");
-        printf("7. Cari pasien berdasarkan ID\n");
-        printf("8. Hapus semua data\n");
-        printf("9. Keluar program\n");
-        printf("Pilih opsi: ");
-        scanf("%s", choiceInput);
-
-        if (!isNumber(choiceInput))
-        {
-            printf("Input tidak valid! Harap masukkan angka.\n");
-            continue;
-        }
-
-        choice = atoi(choiceInput);
-
-        switch (choice)
-        {
-        case 1:
-            printf("Masukkan ID pasien: ");
-            scanf("%s", id);
-            if (!isNumber(id))
-            {
-                printf("Input tidak valid! Harap masukkan angka untuk ID.\n");
-                break;
-            }
-
-            printf("Masukkan nama pasien: ");
-            getchar();
-            fgets(name, sizeof(name), stdin);
-            name[strcspn(name, "\n")] = '\0';
-
-            printf("Masukkan usia pasien: ");
-            scanf("%s", age);
-            if (!isNumber(age))
-            {
-                printf("Input tidak valid! Harap masukkan angka untuk usia.\n");
-                break;
-            }
-
-            printf("Masukkan jenis kelamin pasien (Pria/Wanita): ");
-            scanf("%s", gender);
-            printf("Masukkan kepentingan pasien (IGD, Kontrol, Konsultasi): ");
-            scanf("%s", status);
-
-            int priority;
-            if (strcmp(status, "IGD") == 0)
-            {
-                priority = 1;
-            }
-            else if (strcmp(status, "Kontrol") == 0)
-            {
-                priority = 2;
-            }
-            else
-            {
-                priority = 3;
-            }
-
-            enqueue(&waitingQueue, createPatient(atoi(id), name, atoi(age), gender, status, priority));
-            printf("Pasien berhasil ditambahkan ke antrian registrasi.\n");
-            break;
-
-        case 2:
-            moveToActiveQueue(&waitingQueue, &activeQueue);
-            break;
-
-        case 3:
-            printQueue(&waitingQueue);
-            break;
-
-        case 4:
-            printActiveQueue(&activeQueue);
-            break;
-
-        case 5:
-            moveToHistory(&activeQueue, &history);
-            break;
-
-        case 6:
-            printHistory(&history);
-            break;
-
-        case 7:
-            printf("Masukkan ID pasien yang ingin dicari: ");
-            scanf("%s", id);
-
-            if (!isNumber(id))
-            {
-                printf("Input tidak valid! Harap masukkan angka untuk ID Pasien.\n");
-                break;
-            }
-
-            searchPatientById(&waitingQueue, &activeQueue, &history, atoi(id));
-            break;
-
-        case 8:
-            clearQueue(&waitingQueue);
-            clearActiveQueue(&activeQueue);
-            clearHistory(&history);
-            break;
-
-        case 9:
-            exit(0);
-            break;
-        default:
-            printf("Opsi tidak valid!!\n");
-        }
-    }
-
-    return 0;
 }
