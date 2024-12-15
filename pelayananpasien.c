@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 // Struktur data
 typedef struct patient
@@ -37,6 +38,19 @@ typedef struct
 {
     Patient *head;
 } SingleLinkedList;
+
+// Fungsi untuk mengecek apakah input hanya angka
+int isNumber(const char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        if (!isdigit(str[i]))
+        {
+            return 0; // Bukan angka
+        }
+    }
+    return 1; // Angka valid
+}
 
 // Fungsi untuk membuat pasien baru
 Patient *createPatient(int id, const char *name, int age, const char *gender, const char *status, int priority)
@@ -172,7 +186,7 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
 {
     if (activeQueue->left == NULL)
     {
-        printf("Sedang tidak ada pasien dalam antrian aktif.\n");
+        printf("Tidak ada pasien dalam antrian aktif.\n");
         return;
     }
 
@@ -227,7 +241,7 @@ void printQueue(Queue *queue)
 void printActiveQueue(DoubleLinkedList *activeQueue)
 {
     Patient *current = activeQueue->left;
-    printf("Antrian Pasien AKtif:\n");
+    printf("Antrian Pasien Aktif:\n");
     while (current != NULL)
     {
         printf("ID Pasien: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
@@ -375,7 +389,9 @@ int main()
     Queue waitingQueue = {NULL, NULL};
     DoubleLinkedList activeQueue = {NULL, NULL};
     SingleLinkedList history = {NULL};
-    int choice, id, age, priority;
+    int choice;
+    char choiceInput[10];
+    char id[10], age[10];
     char name[50], gender[10], status[20];
 
     while (1)
@@ -391,24 +407,46 @@ int main()
         printf("8. Keluar program\n");
         printf("9. Hapus semua data\n");
         printf("Pilih opsi: ");
-        scanf("%d", &choice);
+        scanf("%s", choiceInput);
+
+        if (!isNumber(choiceInput))
+        {
+            printf("Input tidak valid! Harap masukkan angka.\n");
+            continue;
+        }
+
+        choice = atoi(choiceInput);
 
         switch (choice)
         {
         case 1:
-            printf("Masukkan ID Pasien: ");
-            scanf("%d", &id);
+            printf("Masukkan ID pasien: ");
+            scanf("%s", id);
+            if (!isNumber(id))
+            {
+                printf("Input tidak valid! Harap masukkan angka untuk ID.\n");
+                break;
+            }
+
             printf("Masukkan nama pasien: ");
             getchar();
             fgets(name, sizeof(name), stdin);
             name[strcspn(name, "\n")] = '\0';
+
             printf("Masukkan usia pasien: ");
-            scanf("%d", &age);
+            scanf("%s", age);
+            if (!isNumber(age))
+            {
+                printf("Input tidak valid! Harap masukkan angka untuk usia.\n");
+                break;
+            }
+
             printf("Masukkan jenis kelamin pasien (Pria/Wanita): ");
             scanf("%s", gender);
             printf("Masukkan kepentingan pasien (IGD, Kontrol, Konsultasi): ");
             scanf("%s", status);
 
+            int priority;
             if (strcmp(status, "IGD") == 0)
             {
                 priority = 1;
@@ -422,7 +460,7 @@ int main()
                 priority = 3;
             }
 
-            enqueue(&waitingQueue, createPatient(id, name, age, gender, status, priority));
+            enqueue(&waitingQueue, createPatient(atoi(id), name, atoi(age), gender, status, priority));
             printf("Pasien berhasil ditambahkan ke antrian registrasi.\n");
             break;
 
@@ -448,9 +486,15 @@ int main()
 
         case 7:
             printf("Masukkan ID pasien yang ingin dicari: ");
-            scanf("%d", &id);
-            searchPatientById(&waitingQueue, &activeQueue, &history, id);
-            break;
+            scanf("%s", id);
+
+            if (!isNumber(id))
+            {
+                printf("Input tidak valid! Harap masukkan angka untuk ID Pasien.\n");
+                break;
+            }
+
+            searchPatientById(&waitingQueue, &activeQueue, &history, atoi(id));
 
         case 8:
             exit(0);
