@@ -68,22 +68,25 @@ int main()
     while (1)
     {
         system("cls");
-        printf("\n ------ Menu ------\n");
-        printf("1. Tambahkan pasien ke registrasi\n");
-        printf("2. Pindahkan pasien ke antrian aktif\n");
-        printf("3. Cetak antrian registrasi\n");
-        printf("4. Cetak antrian pasien aktif\n");
-        printf("5. Catat histori pasien setelah pemeriksaan\n");
-        printf("6. Tampilkan riwayat pasien hari ini\n");
-        printf("7. Cari pasien berdasarkan ID\n");
-        printf("8. Hapus semua data\n");
-        printf("9. Keluar program\n");
-        printf("Pilih opsi: ");
+        printf("========================================================\n");
+        printf("                 MENU PELAYANAN PASIEN                \n");
+        printf("========================================================\n");
+        printf("1. Tambahkan Data Pasien Ke Registrasi\n");
+        printf("2. Pindahkan Pasien Ke Antrian Aktif\n");
+        printf("3. Cetak Antrian Registrasi\n");
+        printf("4. Cetak Antrian Pasien Aktif\n");
+        printf("5. Catat Histori Pasien Setelah Pemeriksaan\n");
+        printf("6. Cetak Riwayat Pasien Hari Ini\n");
+        printf("7. Cari Pasien Berdasarkan ID Pasien\n");
+        printf("8. Hapus Semua Data\n");
+        printf("9. Keluar Program\n");
+        printf("========================================================\n");
+        printf("Pilih Opsi (Masukkan Angka): ");
         scanf("%s", choiceInput);
 
         if (!isNumber(choiceInput))
         {
-            printf("Input tidak valid! Harap masukkan angka.\n");
+            printf("Input Tidak Valid! Harap Masukkan Angka.\n");
             continue;
         }
 
@@ -92,21 +95,21 @@ int main()
         switch (choice)
         {
         case 1:
-            printf("Masukkan ID pasien: ");
+            printf("Masukkan ID Pasien: ");
             scanf("%s", id);
             if (!isNumber(id))
             {
-                printf("Input tidak valid! Harap masukkan angka untuk ID.\n");
+                printf("Input Tidak Valid! Harap Masukkan Angka Untuk ID.\n");
                 getch();
                 break;
             }
 
-            printf("Masukkan nama pasien: ");
+            printf("Masukkan Nama Pasien: ");
             getchar();
             fgets(name, sizeof(name), stdin);
             name[strcspn(name, "\n")] = '\0';
 
-            printf("Masukkan usia pasien: ");
+            printf("Masukkan Usia Pasien (Tahun): ");
             scanf("%s", age);
             if (!isNumber(age))
             {
@@ -114,9 +117,9 @@ int main()
                 break;
             }
 
-            printf("Masukkan jenis kelamin pasien (Pria/Wanita): ");
+            printf("Masukkan Jenis Kelamin Pasien (Pria/Wanita): ");
             scanf("%s", gender);
-            printf("Masukkan kepentingan pasien (IGD, Kontrol, Konsultasi): ");
+            printf("Masukkan Kepentingan Pasien (IGD, Kontrol, Konsultasi): ");
             scanf("%s", status);
 
             int priority;
@@ -134,7 +137,7 @@ int main()
             }
 
             enqueue(&waitingQueue, createPatient(atoi(id), name, atoi(age), gender, status, priority));
-            printf("Pasien %s dengan ID Pasien: %d berhasil ditambahkan ke antrian registrasi.\n");
+            printf("Pasien %s dengan ID Pasien: %d Berhasil Ditambahkan Ke Antrian Registrasi.\n");
             break;
 
         case 2:
@@ -163,7 +166,7 @@ int main()
             break;
 
         case 7:
-            printf("Masukkan ID pasien yang ingin dicari: ");
+            printf("Masukkan ID Pasien yang Ingin Dicari: ");
             scanf("%s", id);
 
             if (!isNumber(id))
@@ -289,7 +292,7 @@ void moveToActiveQueue(Queue *queue, DoubleLinkedList *activeQueue)
     Patient *nextPatient = findHighestPriorityPatient(queue);
     if (nextPatient == NULL)
     {
-        printf("Tidak ada pasien dalam antrian registrasi.\n");
+        printf("Tidak Ada Pasien dalam Antrian Registrasi.\n");
         return;
     }
 
@@ -334,7 +337,7 @@ void moveToActiveQueue(Queue *queue, DoubleLinkedList *activeQueue)
         }
     }
 
-    printf("Pasien %s dengan ID Pasien: %d berhasil dipindahkan ke antrian aktif.\n", nextPatient->name, nextPatient->id);
+    printf("Pasien %s dengan ID Pasien: %d Berhasil Dipindahkan Ke Antrian Aktif.\n", nextPatient->name, nextPatient->id);
 }
 
 // Fungsi untuk memindahkan pasien dari antrian aktif ke histori
@@ -342,7 +345,7 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
 {
     if (activeQueue->left == NULL)
     {
-        printf("Tidak ada pasien dalam antrian aktif.\n");
+        printf("Tidak Ada Pasien dalam Antrian Aktif.\n");
         return;
     }
 
@@ -361,12 +364,12 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
     servedPatient->left = NULL;
 
     // Tambahkan diagnosis dan tindakan
-    printf("Masukkan diagnosis untuk pasien %s dengan ID Pasien: %d: ", servedPatient->name, servedPatient->id);
+    printf("Masukkan Diagnosis untuk Pasien %s dengan ID Pasien: %d: ", servedPatient->name, servedPatient->id);
     getchar();
     fgets(servedPatient->diagnosis, sizeof(servedPatient->diagnosis), stdin);
     servedPatient->diagnosis[strcspn(servedPatient->diagnosis, "\n")] = '\0';
 
-    printf("Masukkan tindakan untuk pasien %s dengan ID Pasien: %d: ", servedPatient->name, servedPatient->id);
+    printf("Masukkan Tindakan untuk Pasien %s dengan ID Pasien: %d: ", servedPatient->name, servedPatient->id);
     fgets(servedPatient->treatment, sizeof(servedPatient->treatment), stdin);
     servedPatient->treatment[strcspn(servedPatient->treatment, "\n")] = '\0';
 
@@ -374,13 +377,14 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
     servedPatient->next = history->head;
     history->head = servedPatient;
 
-    printf("Pasien %s dengan ID Pasien: %d berhasil ditambahkan ke histori.\n", servedPatient->name, servedPatient->id);
+    printf("Pasien %s dengan ID Pasien: %d Berhasil Ditambahkan Ke Histori.\n", servedPatient->name, servedPatient->id);
 }
+
 // Fungsi untuk mencetak antrian registrasi
 void printQueue(Queue *queue)
 {
     Patient *current = queue->front;
-    
+
     int console_width = 80;
     char title[] = "Antrian Registrasi";
     int title_len = strlen(title);
@@ -403,9 +407,9 @@ void printQueue(Queue *queue)
         char message[] = "Tidak Ada Pasien Dalam Antrian Registrasi";
         int message_len = strlen(message);
         int message_padding = (console_width - message_len) / 2;
-        printf("%*s%s\n", message_padding, "", message);  
+        printf("%*s%s\n", message_padding, "", message);
     }
-    
+
     printf("=========================================================================================\n");
 }
 
@@ -427,8 +431,8 @@ void printActiveQueue(DoubleLinkedList *activeQueue)
 
     while (current != NULL)
     {
-        printf("| %-10d | %-22s | %-5d | %-17s | %-19s |\n", 
-            current->id, current->name, current->age, current->gender, current->status);
+        printf("| %-10d | %-22s | %-5d | %-17s | %-19s |\n",
+               current->id, current->name, current->age, current->gender, current->status);
         current = current->right;
     }
     if (activeQueue->left == NULL)
@@ -436,10 +440,9 @@ void printActiveQueue(DoubleLinkedList *activeQueue)
         char message[] = "Tidak Ada Pasien Dalam Antrian Aktif";
         int message_len = strlen(message);
         int message_padding = (console_width - message_len) / 2;
-        printf("%*s%s\n", message_padding, "", message);  
+        printf("%*s%s\n", message_padding, "", message);
     }
     printf("=========================================================================================\n");
-
 }
 
 // Fungsi untuk mencetak histori pasien
@@ -474,9 +477,9 @@ void printHistory(SingleLinkedList *history)
         {
             current = current->next;
         }
-        printf("| %-10d | %-22s | %-5d | %-17s | %-19s | %-19s | %-18s |\n", 
-            current->id, current->name, current->age, current->gender, 
-            current->status, current->diagnosis, current->treatment);
+        printf("| %-10d | %-22s | %-5d | %-17s | %-19s | %-19s | %-18s |\n",
+               current->id, current->name, current->age, current->gender,
+               current->status, current->diagnosis, current->treatment);
     }
 
     if (history->head == NULL)
@@ -484,7 +487,7 @@ void printHistory(SingleLinkedList *history)
         char message[] = "Belum Ada Pasien Untuk Hari Ini";
         int message_len = strlen(message);
         int message_padding = (console_width - message_len) / 2;
-        printf("%*s%s\n", message_padding, "", message);  
+        printf("%*s%s\n", message_padding, "", message);
     }
     printf("====================================================================================================================================\n");
 }
@@ -498,8 +501,8 @@ void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinked
     {
         if (current->id == id)
         {
-            printf("Pasien ditemukan diantrian registrasi:\n");
-            printf("ID Pasien: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
+            printf("Pasien Ditemukan Diantrian Registrasi:\n");
+            printf("ID Pasien: %d\nNama: %s\nUsia: %d\nJenis Kelamin: %s\nKepentingan: %s\n",
                    current->id, current->name, current->age, current->gender, current->status);
             return;
         }
@@ -512,8 +515,8 @@ void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinked
     {
         if (current->id == id)
         {
-            printf("Pasien ditemukan diantrian aktif:\n");
-            printf("ID Pasien: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
+            printf("Pasien Ditemukan Diantrian Aktif:\n");
+            printf("ID Pasien: %d\n, Nama: %s\n, Usia: %d\n, Jenis Kelamin: %s\n, Kepentingan: %s\n",
                    current->id, current->name, current->age, current->gender, current->status);
             return;
         }
@@ -526,8 +529,8 @@ void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinked
     {
         if (current->id == id)
         {
-            printf("Pasien ditemukan di riwayat pasien:\n");
-            printf("ID Pasien: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
+            printf("Pasien Ditemukan di Riwayat Pasien:\n");
+            printf("ID Pasien: %d\n, Nama: %s\n, Usia: %d\n, Jenis Kelamin: %s\n, Kepentingan: %s\n",
                    current->id, current->name, current->age, current->gender, current->status);
             printf("Diagosis: %s\n", current->diagnosis);
             printf("Tindakan: %s\n", current->treatment);
@@ -536,7 +539,7 @@ void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinked
         current = current->next;
     }
 
-    printf("Pasien dengan ID %d tidak ditemukan.\n", id);
+    printf("Pasien dengan ID %d Tidak Ditemukan.\n", id);
 }
 
 // Fungsi untuk menghapus semua pasien dari Queue
@@ -551,7 +554,7 @@ void clearQueue(Queue *queue)
         free(temp);
     }
     queue->front = queue->rear = NULL;
-    printf("Semua data di antrian registrasi telah dihapus.\n");
+    printf("Semua Data Pasien di Antrian Registrasi Telah Dihapus.\n");
 }
 
 // Fungsi untuk menghapus semua pasien dari Double Linked List (Antrian Aktif)
@@ -566,7 +569,7 @@ void clearActiveQueue(DoubleLinkedList *activeQueue)
         free(temp);
     }
     activeQueue->left = activeQueue->right = NULL;
-    printf("Semua data di antrian pasien aktif telah dihapus.\n");
+    printf("Semua Data di Antrian Pasien Aktif Telah Dihapus.\n");
 }
 
 // Fungsi untuk menghapus semua pasien dari Single Linked List (Riwayat)
@@ -581,5 +584,5 @@ void clearHistory(SingleLinkedList *history)
         free(temp);
     }
     history->head = NULL;
-    printf("Semua data di riwayat pasien telah dihapus.\n");
+    printf("Semua Data Pasien di Riwayat Pasien Telah Dihapus.\n");
 }
