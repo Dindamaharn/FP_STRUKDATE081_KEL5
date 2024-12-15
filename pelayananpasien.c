@@ -243,17 +243,31 @@ void printActiveQueue(DoubleLinkedList *activeQueue)
 // Fungsi untuk mencetak histori pasien
 void printHistory(SingleLinkedList *history)
 {
+    // Hitung jumlah pasien dlm riwayat
     Patient *current = history->head;
-    printf("Riwayat Pasien Hari Ini:\n");
+    int count =0;
     while (current != NULL)
     {
+        count++;
+        current = current->next;
+    }
+
+    // Cetak riwayat pasien dari yang pertama diperiksa
+    printf("Riwayat Pasien Hari Ini:\n");
+    for (int i =count; i>0; i--)
+    {
+        current = history->head;
+        for (int j = 1; j < i; j++)
+        {
+            current = current->next;
+        }
         printf("ID Pasien: %d, Nama: %s, Usia: %d, Jenis Kelamin: %s, Kepentingan: %s\n",
                current->id, current->name, current->age, current->gender, current->status);
         printf("Diagnosis: %s\n", current->diagnosis);
         printf("Tindakan: %s\n", current->treatment);
-        current = current->next;
         printf("\n");
     }
+        
     if (history->head == NULL)
     {
         printf("Kosong.\n");
