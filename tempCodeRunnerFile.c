@@ -134,7 +134,7 @@ int main()
             }
 
             enqueue(&waitingQueue, createPatient(atoi(id), name, atoi(age), gender, status, priority));
-            printf("Pasien %s dengan ID Pasien: %d berhasil ditambahkan ke antrian registrasi.\n");
+            printf("Pasien berhasil ditambahkan ke antrian registrasi.\n");
             break;
 
         case 2:
@@ -334,7 +334,7 @@ void moveToActiveQueue(Queue *queue, DoubleLinkedList *activeQueue)
         }
     }
 
-    printf("Pasien %s dengan ID Pasien: %d berhasil dipindahkan ke antrian aktif.\n", nextPatient->name, nextPatient->id);
+    printf("Pasien %s (ID Pasien: %d) dipindahkan ke antrian aktif.\n", nextPatient->name, nextPatient->id);
 }
 
 // Fungsi untuk memindahkan pasien dari antrian aktif ke histori
@@ -361,12 +361,12 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
     servedPatient->left = NULL;
 
     // Tambahkan diagnosis dan tindakan
-    printf("Masukkan diagnosis untuk pasien %s dengan ID Pasien: %d: ", servedPatient->name, servedPatient->id);
+    printf("Masukkan diagnosis untuk pasien %s (ID Pasien: %d): ", servedPatient->name, servedPatient->id);
     getchar();
     fgets(servedPatient->diagnosis, sizeof(servedPatient->diagnosis), stdin);
     servedPatient->diagnosis[strcspn(servedPatient->diagnosis, "\n")] = '\0';
 
-    printf("Masukkan tindakan untuk pasien %s dengan ID Pasien: %d: ", servedPatient->name, servedPatient->id);
+    printf("Masukkan tindakan untuk pasien %s (ID Pasien: %d): ", servedPatient->name, servedPatient->id);
     fgets(servedPatient->treatment, sizeof(servedPatient->treatment), stdin);
     servedPatient->treatment[strcspn(servedPatient->treatment, "\n")] = '\0';
 
@@ -374,7 +374,7 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
     servedPatient->next = history->head;
     history->head = servedPatient;
 
-    printf("Pasien %s dengan ID Pasien: %d berhasil ditambahkan ke histori.\n", servedPatient->name, servedPatient->id);
+    printf("Pasien %s (ID Pasien: %d) telah dipindahkan ke histori.\n", servedPatient->name, servedPatient->id);
 }
 // Fungsi untuk mencetak antrian registrasi
 void printQueue(Queue *queue)
