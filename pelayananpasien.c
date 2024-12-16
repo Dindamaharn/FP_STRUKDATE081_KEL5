@@ -80,7 +80,8 @@ int main()
         printf("6. Cetak Riwayat Pasien Hari Ini\n");
         printf("7. Cari Pasien Berdasarkan ID Pasien\n");
         printf("8. Hapus Semua Data\n");
-        printf("9. Keluar Program\n");
+        printf("9. Edit Data Pasien\n");
+        printf("10. Keluar Program\n");
         printf("========================================================\n");
         printf("Pilih Opsi (Masukkan Angka): ");
         scanf("%s", choiceInput);
@@ -188,9 +189,24 @@ int main()
             break;
 
         case 9:
+            printf("Masukkan ID Pasien yang Ingin Diedit: ");
+            scanf("%s", id);
+
+            if (!isNumber(id))
+            {
+                printf("Input tidak valid! Harap masukkan angka untuk ID Pasien.\n");
+                break;
+            }
+
+            editPatientData(&waitingQueue, &activeQueue, &history, atoi(id));
+            getch();
+            break;
+
+        case 10:
             exit(0);
             getch();
             break;
+
         default:
             printf("Opsi tidak valid!!\n");
         }
@@ -517,7 +533,7 @@ void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinked
         if (current->id == id)
         {
             printf("Pasien Ditemukan Diantrian Aktif:\n");
-            printf("ID Pasien: %d\n, Nama: %s\n, Usia: %d\n, Jenis Kelamin: %s\n, Kepentingan: %s\n",
+            printf("ID Pasien: %d\nNama: %s\nUsia: %d\nJenis Kelamin: %s\nKepentingan: %s\n",
                    current->id, current->name, current->age, current->gender, current->status);
             return;
         }
@@ -531,7 +547,7 @@ void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinked
         if (current->id == id)
         {
             printf("Pasien Ditemukan di Riwayat Pasien:\n");
-            printf("ID Pasien: %d\n, Nama: %s\n, Usia: %d\n, Jenis Kelamin: %s\n, Kepentingan: %s\n",
+            printf("ID Pasien: %d\nNama: %s\nUsia: %d\nJenis Kelamin: %s\nKepentingan: %s\n",
                    current->id, current->name, current->age, current->gender, current->status);
             printf("Diagosis: %s\n", current->diagnosis);
             printf("Tindakan: %s\n", current->treatment);
