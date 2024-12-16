@@ -51,6 +51,7 @@ void searchPatientById(Queue *queue, DoubleLinkedList *activeQueue, SingleLinked
 void clearQueue(Queue *queue);
 void clearActiveQueue(DoubleLinkedList *activeQueue);
 void clearHistory(SingleLinkedList *history);
+void editPatientData(Queue *queue, DoubleLinkedList *activeQueue, SingleLinkedList *history, int id);
 int isNumber(const char *str);
 Patient *createPatient(int id, const char *name, int age, const char *gender, const char *status, int priority);
 
@@ -585,4 +586,84 @@ void clearHistory(SingleLinkedList *history)
     }
     history->head = NULL;
     printf("Semua Data Pasien di Riwayat Pasien Telah Dihapus.\n");
+}
+void editPatientData(Queue *queue, DoubleLinkedList *activeQueue, SingleLinkedList *history, int id)
+{
+    Patient *current = NULL;
+
+    // Cari di antrian registrasi
+    current = queue->front;
+    while (current != NULL && current->id != id)
+    {
+        current = current->next;
+    }
+
+    // Jika ditemukan di registrasi
+    if (current != NULL)
+    {
+        printf("Mengedit data pasien di antrian registrasi.\n");
+    }
+    else
+    {
+        // Cari di antrian aktif
+        current = activeQueue->left;
+        while (current != NULL && current->id != id)
+        {
+            current = current->right;
+        }
+
+        // Jika ditemukan di antrian aktif
+        if (current != NULL)
+        {
+            printf("Mengedit data pasien di antrian aktif.\n");
+        }
+        else
+        {
+            // Cari di histori
+            current = history->head;
+            while (current != NULL && current->id != id)
+            {
+                current = current->next;
+            }
+
+            // Jika ditemukan di histori
+            if (current != NULL)
+            {
+                printf("Mengedit data pasien di histori.\n");
+            }
+        }
+    }
+
+    // Jika pasien ditemukan, izinkan pengeditan
+    if (current != NULL)
+    {
+        printf("Mengedit data pasien dengan ID: %d\n", current->id);
+
+        printf("Nama saat ini: %s\nMasukkan Nama Baru: ", current->name);
+        getchar();
+        fgets(current->name, sizeof(current->name), stdin);
+        current->name[strcspn(current->name, "\n")] = '\0';
+
+        printf("Usia saat ini: %d\nMasukkan Usia Baru: ", current->age);
+        char newAge[10];
+        scanf("%s", newAge);
+        if (isNumber(newAge))
+        {
+            current->age = atoi(newAge);
+        }
+        else
+        {
+            printf("Usia tidak valid, tidak dilakukan perubahan.\n");
+        }
+
+        printf("Jenis Kelamin saat ini: %s\nMasukkan Jenis Kelamin Baru (Pria/Wanita): ", current->gender);
+        scanf("%s", current->gender);
+
+        printf("Kepentingan saat ini: %s\nMasukkan Kepentingan Baru (IGD, Kontrol, Konsultasi): ", current->status);
+        scanf("%s", current->status);
+    }
+    else
+    {
+        printf("Pasien dengan ID %d tidak ditemukan.\n", id);
+    }
 }
