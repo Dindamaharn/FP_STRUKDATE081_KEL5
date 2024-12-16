@@ -603,7 +603,7 @@ void clearHistory(SingleLinkedList *history)
     history->head = NULL;
     printf("Semua Data Pasien di Riwayat Pasien Telah Dihapus.\n");
 }
-// Fungsi data pasien
+// Fungsi edit data pasien
 void editPatientData(Queue *queue, DoubleLinkedList *activeQueue, SingleLinkedList *history, int id)
 {
     Patient *current = NULL;
