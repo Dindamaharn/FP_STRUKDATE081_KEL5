@@ -391,8 +391,17 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
     servedPatient->treatment[strcspn(servedPatient->treatment, "\n")] = '\0';
 
     // Tambahkan ke histori
-    servedPatient->next = history->head;
-    history->head = servedPatient;
+    servedPatient->next = NULL;
+    if (history->head == NULL) {
+        history->head = servedPatient;  
+    } else {
+    Patient *current = history->head;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    current->next = servedPatient;
+}
 
     printf("Pasien %s dengan ID Pasien: %d Berhasil Ditambahkan Ke Histori.\n", servedPatient->name, servedPatient->id);
 }
