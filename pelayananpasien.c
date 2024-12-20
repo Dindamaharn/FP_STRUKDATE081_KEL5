@@ -483,30 +483,9 @@ void printHistory(SingleLinkedList *history)
 
     printf("%*s%s\n", padding, "", title);
 
-    // Hitung jumlah pasien dlm riwayat
-    int count = 0;
-    while (current != NULL)
-    {
-        count++;
-        current = current->next;
-    }
-
     printf("====================================================================================================================================\n");
     printf("| ID Pasien  | Nama                   | Usia  | Jenis Kelamin     | Kepentingan         | Diagnosis           | Tindakan           |\n");
     printf("====================================================================================================================================\n");
-
-    // Cetak riwayat pasien dari yang pertama diperiksa
-    for (int i = count; i > 0; i--)
-    {
-        current = history->head;
-        for (int j = 1; j < i; j++)
-        {
-            current = current->next;
-        }
-        printf("| %-10d | %-22s | %-5d | %-17s | %-19s | %-19s | %-18s |\n",
-               current->id, current->name, current->age, current->gender,
-               current->status, current->diagnosis, current->treatment);
-    }
 
     if (history->head == NULL)
     {
@@ -515,6 +494,18 @@ void printHistory(SingleLinkedList *history)
         int message_padding = (console_width - message_len) / 2;
         printf("%*s%s\n", message_padding, "", message);
     }
+    else
+    {
+        while (current != NULL)
+        {
+            printf("| %-10d | %-22s | %-5d | %-17s | %-19s | %-19s | %-18s |\n",
+               current->id, current->name, current->age, current->gender,
+               current->status, current->diagnosis, current->treatment);
+            current = current->next;
+        }
+    }
+
+    
     printf("====================================================================================================================================\n");
 }
 
