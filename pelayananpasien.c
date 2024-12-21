@@ -139,7 +139,8 @@ int main()
             }
 
             enqueue(&waitingQueue, createPatient(atoi(id), name, atoi(age), gender, status, priority));
-            printf("Pasien %s dengan ID Pasien: %d Berhasil Ditambahkan Ke Antrian Registrasi.\n");
+            printf("Pasien %s dengan ID Pasien: %d Berhasil Ditambahkan Ke Antrian Registrasi.\n", name, atoi(id));
+            getch();
             break;
 
         case 2:
@@ -392,16 +393,20 @@ void moveToHistory(DoubleLinkedList *activeQueue, SingleLinkedList *history)
 
     // Tambahkan ke histori
     servedPatient->next = NULL;
-    if (history->head == NULL) {
-        history->head = servedPatient;  
-    } else {
-    Patient *current = history->head;
-    while (current->next != NULL) {
-        current = current->next;
+    if (history->head == NULL)
+    {
+        history->head = servedPatient;
     }
+    else
+    {
+        Patient *current = history->head;
+        while (current->next != NULL)
+        {
+            current = current->next;
+        }
 
-    current->next = servedPatient;
-}
+        current->next = servedPatient;
+    }
 
     printf("Pasien %s dengan ID Pasien: %d Berhasil Ditambahkan Ke Histori.\n", servedPatient->name, servedPatient->id);
 }
@@ -499,13 +504,12 @@ void printHistory(SingleLinkedList *history)
         while (current != NULL)
         {
             printf("| %-10d | %-22s | %-5d | %-17s | %-19s | %-19s | %-18s |\n",
-               current->id, current->name, current->age, current->gender,
-               current->status, current->diagnosis, current->treatment);
+                   current->id, current->name, current->age, current->gender,
+                   current->status, current->diagnosis, current->treatment);
             current = current->next;
         }
     }
 
-    
     printf("====================================================================================================================================\n");
 }
 
